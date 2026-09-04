@@ -1,636 +1,402 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>教材管理中心</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>教材編輯室｜完整版</title>
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: #f5f7fb;
-    color: #334155;
-    font-family:
-        "Microsoft JhengHei",
-        "PingFang TC",
-        sans-serif;
-}
-
-header {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 25px;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0;
-}
-
-main {
-    max-width: 1100px;
-    margin: auto;
-    padding: 30px 20px 60px;
-}
-
-.back {
-    display: inline-block;
-    text-decoration: none;
-    color: #5968c8;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
-
-.card {
-    background: white;
-    padding: 28px;
-    border-radius: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.07);
-}
-
-h2 {
-    margin-top: 0;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-}
-
-@media (max-width: 700px) {
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-input,
-select {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #cbd5e1;
-    border-radius: 10px;
-    font-size: 16px;
-}
-
-.image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-}
-
-.image-box {
-    border: 2px dashed #cbd5e1;
-    border-radius: 16px;
-    padding: 18px;
-}
-
-.image-box h3 {
-    margin-top: 0;
-}
-
-.preview {
-    width: 100%;
-    min-height: 180px;
-    margin-top: 15px;
-    border-radius: 10px;
-    background: #f8fafc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    color: #94a3b8;
-}
-
-.preview img {
-    width: 100%;
-    height: auto;
-    display: none;
-}
-
-.notice {
-    background: #fff7ed;
-    border-left: 5px solid #f97316;
-    padding: 18px;
-    border-radius: 10px;
-    line-height: 1.8;
-}
-
-button {
-    border: none;
-    padding: 15px 25px;
-    border-radius: 12px;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.generate-btn {
-    background: #667eea;
-    color: white;
-}
-
-.generate-btn:hover {
-    background: #5565d6;
-}
-
-.result {
-    display: none;
-    margin-top: 25px;
-}
-
-textarea {
-    width: 100%;
-    height: 250px;
-    padding: 15px;
-    font-family: monospace;
-    border-radius: 10px;
-    border: 1px solid #cbd5e1;
-}
-
-.download-btn {
-    margin-top: 15px;
-    background: #16a34a;
-    color: white;
-}
-
-.file-name {
-    margin-top: 8px;
-    color: #64748b;
-    font-size: 14px;
-}
+:root{--p:#635bda;--bg:#f5f7fb;--line:#dce2ec;--text:#2f3b4c;--soft:#f3f2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;background:var(--bg);color:var(--text)}
+header{padding:24px;text-align:center;background:linear-gradient(135deg,#625dd8,#8d88ef);color:#fff}
+.wrap{max-width:1250px;margin:auto;padding:20px}
+.grid{display:grid;grid-template-columns:310px 1fr;gap:18px}
+.card{background:#fff;border-radius:18px;padding:20px;margin-bottom:18px;box-shadow:0 4px 18px #00000010}
+.field{margin:11px 0}.field label{display:block;font-weight:700;margin-bottom:6px}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font:inherit}
+textarea{min-height:100px}
+button{border:0;border-radius:10px;padding:10px 14px;font:inherit;font-weight:bold;cursor:pointer;background:#e9edf5}
+button:hover{filter:brightness(.98)}
+.primary{background:var(--p);color:#fff}.danger{background:#ffe5e5;color:#a33}
+.list{display:grid;gap:7px}.item{padding:11px;border:1px solid #e5e8ef;border-radius:10px;cursor:pointer}
+.item.active{border:2px solid var(--p);background:var(--soft)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.hidden{display:none}
+.small{font-size:13px;color:#778395}.repeat{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;background:#fcfdff}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}
+.images{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;direction:rtl}
+.image{min-height:140px;border:2px dashed #cbd3e2;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;background:#fafcff}
+.image img{width:100%;height:100%;object-fit:contain}.image label{padding:10px;text-align:center;cursor:pointer}.image input{display:none}
+.preview{background:#f8f9fc;border-radius:14px;padding:18px;min-height:150px;line-height:1.8}.rtl{direction:rtl;text-align:right}.preview-text{white-space:pre-wrap}.preview-text p,.preview-text div{margin:0 0 .9em}.preview-text p:last-child,.preview-text div:last-child{margin-bottom:0}
+.lessonimgs{direction:rtl;display:flex;gap:10px;overflow:auto}.lessonimgs img{max-height:350px;border-radius:8px}
+.question{border:1px solid var(--line);padding:14px;border-radius:12px;margin:10px 0}
+.rich-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px;border-bottom:1px solid var(--line);background:#f7f8fc}
+.toolbar button{padding:6px 10px;border-radius:7px;background:#e9edf5}
+.toolbar .color-label{display:flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:7px;padding:4px 7px;font-size:13px}
+.toolbar input[type=color]{width:34px;height:28px;padding:1px;border:0;background:transparent}
+.rich-editor{min-height:150px;padding:14px;outline:none;line-height:1.8;white-space:pre-wrap}
+.rich-editor:empty:before{content:attr(data-placeholder);color:#9aa4b5}
+.rich-editor img{max-width:100%}
+.notice{padding:12px 14px;border-radius:10px;background:#fff7db;color:#775b00;margin-bottom:14px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.images{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.wrap{padding:10px}.card{padding:14px}.images{grid-template-columns:1fr}.head{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
-
 <body>
-
-<header>
-    <h1>🔧 教材管理中心</h1>
-    <p>建立小朋友的學習教材</p>
-</header>
-
-<main>
-
-<a href="index.html" class="back">
-← 回到學習首頁
-</a>
-
-<div class="notice">
-
-<strong>📌 教材建立方式</strong><br>
-
-在這裡選擇教材圖片並預覽。<br>
-
-完成後系統會產生教材頁面的程式碼。<br>
-
-圖片本身之後會放在 GitHub 的教材資料夾中，因此不會把大量圖片塞進網頁資料或 JSON。
-
-</div>
-
-
-<div class="card">
-
-<h2>📚 基本資料</h2>
-
-<div class="form-grid">
-
-<div>
-<label>年級</label>
-
-<select id="grade">
-<option value="四年級">四年級</option>
-<option value="五年級">五年級</option>
-<option value="六年級">六年級</option>
-</select>
-
-</div>
-
-
-<div>
-
-<label>課次</label>
-
-<input
-type="text"
-id="lessonNumber"
-placeholder="例如：第一課">
-
-</div>
-
-
-<div>
-
-<label>課名</label>
-
-<input
-type="text"
-id="lessonName"
-placeholder="例如：水陸小高手">
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>🖼️ 教材圖片</h2>
-
-<div class="image-grid">
-
-<div class="image-box">
-
-<h3>📖 課文</h3>
-
-<input type="file" accept="image/*"
-onchange="previewImage(this,'textPreview','textFile')">
-
-<div class="file-name" id="textFile"></div>
-
-<div class="preview">
-<span id="textPreviewText">尚未選擇圖片</span>
-<img id="textPreview">
-</div>
-
-</div>
-
-
-<div class="image-box">
-
-<h3>💡 課文大意</h3>
-
-<input type="file" accept="image/*"
-onchange="previewImage(this,'summaryPreview','summaryFile')">
-
-<div class="file-name" id="summaryFile"></div>
-
-<div class="preview">
-<span id="summaryPreviewText">尚未選擇圖片</span>
-<img id="summaryPreview">
-</div>
-
-</div>
-
-
-<div class="image-box">
-
-<h3>🧱 課文結構</h3>
-
-<input type="file" accept="image/*"
-onchange="previewImage(this,'structurePreview','structureFile')">
-
-<div class="file-name" id="structureFile"></div>
-
-<div class="preview">
-<span id="structurePreviewText">尚未選擇圖片</span>
-<img id="structurePreview">
-</div>
-
-</div>
-
-
-<div class="image-box">
-
-<h3>❓ 閱讀理解</h3>
-
-<input type="file" accept="image/*"
-onchange="previewImage(this,'readingPreview','readingFile')">
-
-<div class="file-name" id="readingFile"></div>
-
-<div class="preview">
-<span id="readingPreviewText">尚未選擇圖片</span>
-<img id="readingPreview">
-</div>
-
-</div>
-
-
-<div class="image-box">
-
-<h3>✨ 修辭分析</h3>
-
-<input type="file" accept="image/*"
-onchange="previewImage(this,'rhetoricPreview','rhetoricFile')">
-
-<div class="file-name" id="rhetoricFile"></div>
-
-<div class="preview">
-<span id="rhetoricPreviewText">尚未選擇圖片</span>
-<img id="rhetoricPreview">
-</div>
-
-</div>
-
-
-<div class="image-box">
-
-<h3>🔤 生字資料</h3>
-
-<input type="file" accept="image/*"
-onchange="previewImage(this,'wordPreview','wordFile')">
-
-<div class="file-name" id="wordFile"></div>
-
-<div class="preview">
-<span id="wordPreviewText">尚未選擇圖片</span>
-<img id="wordPreview">
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>🚀 建立教材頁面</h2>
-
-<p>
-確認資料與圖片後，產生教材頁面的基本程式碼。
-</p>
-
-<button class="generate-btn" onclick="generateLesson()">
-產生教材頁面
-</button>
-
-<div class="result" id="result">
-
-<h3>📄 lesson.html</h3>
-
-<textarea id="output"></textarea>
-
-<button class="download-btn" onclick="downloadLesson()">
-⬇️ 下載 lesson.html
-</button>
-
-</div>
-
-</div>
-
+<header><h1>🛠️ 我的教材編輯室</h1><div>每一個教材區塊都可加入文字說明，支援粗體、顏色與基本格式</div></header>
+
+<div class="wrap"><div class="grid">
+<aside class="card">
+  <h2>📚 課程資料</h2>
+  <div class="field"><label>學科</label><select id="subject"><option>國語</option><option>數學</option><option>社會</option><option>自然</option><option>英文</option></select></div>
+  <div class="field"><label>學制</label><select id="stage"><option>國小</option><option>國中</option><option>高中</option></select></div>
+  <div class="field"><label>年級</label><input id="grade" value="四年級"></div>
+  <div class="field"><label>學期</label><select id="semester"><option>上學期</option><option>下學期</option></select></div>
+  <div class="field"><label>課次</label><input id="lessonNo" value="第一課"></div>
+  <div class="field"><label>課名</label><input id="lessonTitle" value="水陸小高手"></div>
+  <hr><h2>🧩 教材區塊</h2>
+  <div id="list" class="list"></div>
+  <button style="width:100%;margin-top:10px" onclick="addCustom()">＋ 新增自訂區塊</button>
+</aside>
+
+<main class="card">
+  <div class="notice">💡 <b>使用方式：</b>先選擇左側區塊 → 輸入內容 → 可直接按「更新預覽」查看效果；按「儲存」後會同步儲存在這台裝置。</div>
+  <div id="empty" class="small">← 從左邊選擇一個教材區塊開始編輯</div>
+  <div id="editor" class="hidden">
+    <div class="head"><h2 id="heading"></h2><button class="danger" onclick="delSection()">🗑️ 刪除區塊</button></div>
+    <div id="form"></div>
+    <div class="actions"><button class="primary" onclick="saveCurrent()">💾 儲存</button><button onclick="preview(true)">👀 更新預覽</button></div>
+    <hr><h2>✨ 預覽</h2><div id="preview" class="preview"></div>
+  </div>
+  <hr><h2>📦 備份教材</h2>
+  <div class="actions">
+    <button onclick="saveAll()">💾 儲存到這台裝置</button>
+    <button class="primary" onclick="download()">⬇️ 下載教材資料</button>
+    <button onclick="loadFile.click()">📂 載入資料</button>
+  </div>
+  <input id="loadFile" class="hidden" type="file" accept=".json" onchange="load(event)">
 </main>
-
+</div></div>
 
 <script>
+const base=[
+ ['📖 課文','lesson',{text:'',images:[]}],
+ ['🧱 課文結構','imageText',{text:'',images:[]}],
+ ['💡 課文大意','imageText',{text:'',images:[]}],
+ ['❓ 閱讀理解','imageText',{text:'',images:[]}],
+ ['✏️ 生字','characters',{intro:'',items:[]}],
+ ['🔤 字音字形','sound',{intro:'',items:[]}],
+ ['⭕ 圈詞','words',{intro:'',items:[]}],
+ ['🚂 成語列車','idioms',{intro:'',items:[]}],
+ ['💬 句型','sentence',{intro:'',items:[]}],
+ ['✨ 修辭分析','rhetoric',{intro:'',items:[],images:[]}],
+ ['🏆 大挑戰','challenge',{intro:'',items:[]}]
+].map((x,i)=>({id:'s'+i,name:x[0],type:x[1],data:x[2]}));
 
-function previewImage(input, previewId, fileId) {
+let oldData=null;
+try{oldData=JSON.parse(localStorage.getItem('editorDataV4')||localStorage.getItem('editorDataV3')||'null')}catch(e){}
+let data=oldData||{
+ subject:'國語',stage:'國小',grade:'四年級',semester:'上學期',
+ lessonNo:'第一課',lessonTitle:'水陸小高手',sections:structuredClone(base)
+};
+let cur=-1;
+const $=x=>document.getElementById(x);
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const plainToHtml=x=>esc(x??'').replace(/\n/g,'<br>');
 
-    const preview = document.getElementById(previewId);
-    const fileName = document.getElementById(fileId);
+function field(label,id,val='',ta=false){
+ return `<div class="field"><label>${label}</label>${ta?`<textarea id="${id}">${esc(val)}</textarea>`:`<input id="${id}" value="${esc(val)}">`}</div>`;
+}
+function richEditor(label,id,html=''){
+ return `<div class="field"><label>${label}</label>
+ <div class="rich-wrap">
+   <div class="toolbar">
+     <button type="button" onmousedown="event.preventDefault();formatRich('${id}','bold')" title="粗體"><b>B</b></button>
+     <button type="button" onmousedown="event.preventDefault();formatRich('${id}','italic')" title="斜體"><i>I</i></button>
+     <button type="button" onmousedown="event.preventDefault();formatRich('${id}','underline')" title="底線"><u>U</u></button>
+     <button type="button" onmousedown="event.preventDefault();formatRich('${id}','insertUnorderedList')" title="項目符號">• 列表</button>
+     <button type="button" onmousedown="event.preventDefault();formatRich('${id}','removeFormat')" title="清除格式">清除格式</button>
+     <label class="color-label">🎨 顏色 <input type="color" value="#2f3b4c" oninput="formatRich('${id}','foreColor',this.value)"></label>
+   </div>
+   <div id="${id}" class="rich-editor" contenteditable="true" data-placeholder="請在這裡輸入文字…">${html||''}</div>
+ </div></div>`;
+}
+function formatRich(id,cmd,val=null){
+ const el=$(id); el.focus();
+ document.execCommand(cmd,false,val);
+}
 
-    if (!input.files || !input.files[0]) {
-        return;
-    }
+function renderList(){
+ list.innerHTML='';
+ data.sections.forEach((s,i)=>{
+   const d=document.createElement('div');
+   d.className='item '+(cur===i?'active':'');
+   d.textContent=s.name;
+   d.onclick=()=>select(i);
+   list.appendChild(d);
+ });
+}
+function select(i){
+ cur=i;
+ empty.classList.add('hidden');
+ editor.classList.remove('hidden');
+ heading.textContent='編輯：'+data.sections[i].name;
+ build();
+ renderList();
+ preview(false);
+}
 
-    const file = input.files[0];
+function build(){
+ const s=data.sections[cur],d=s.data;
+ let h='';
+ if(s.type==='lesson'){
+   h='<p class="small">課文可輸入文字，也可上傳至少 4 張圖片；圖片由右至左排列。</p>'
+    +richEditor('文字編輯','textRich',d.text)
+    +'<div class="field"><label>課文圖片</label><div id="imgs" class="images"></div></div>';
+   form.innerHTML=h; renderImages(); return;
+ }
+ if(s.type==='text'){
+   form.innerHTML=richEditor('文字編輯','textRich',d.text); return;
+ }
+ if(s.type==='imageText'){
+   h='<p class="small">可上傳整理好的教材圖片，也可加入補充文字。</p>'
+    +richEditor('補充文字（選填）','textRich',d.text)
+    +'<div class="field"><label>教材圖片</label><div id="imgs" class="images"></div></div>';
+   form.innerHTML=h;renderImages();return;
+ }
+ if(s.type==='rhetoric'){
+   h=richEditor('文字編輯（整體說明）','introRich',d.intro)
+    +'<div class="field"><label>修辭分析圖片（選填）</label><div id="imgs" class="images"></div></div>'
+    +'<div id="items"></div><button onclick="addItem()">＋ 新增修辭分析</button>';
+   form.innerHTML=h;renderImages();renderItems();return;
+ }
+ if(s.type==='characters')h=richEditor('文字編輯（整體說明）','introRich',d.intro);
+ if(s.type==='sound')h=richEditor('文字編輯（整體說明）','introRich',d.intro);
+ if(s.type==='words')h=richEditor('文字編輯（整體說明）','introRich',d.intro);
+ if(s.type==='idioms')h=richEditor('文字編輯（整體說明）','introRich',d.intro);
+ if(s.type==='sentence')h=richEditor('文字編輯（句型說明）','introRich',d.intro);
+ if(s.type==='challenge')h=richEditor('文字編輯（挑戰說明）','introRich',d.intro);
+ if(s.type==='custom'){
+   h=field('區塊名稱','customName',s.name.replace('📌 ',''))
+    +richEditor('文字編輯','textRich',d.text);
+   form.innerHTML=h;return;
+ }
+ h+='<div id="items"></div><button onclick="addItem()">＋ 新增資料</button>';
+ form.innerHTML=h;
+ renderItems();
+}
 
-    fileName.textContent =
-        "已選擇：" + file.name;
+function renderImages(){
+ imgs.innerHTML='';
+ const a=data.sections[cur].data.images||[];
+ const minSlots=data.sections[cur].type==='lesson'?4:Math.max(1,a.filter(Boolean).length+1);
+ for(let i=0;i<Math.max(minSlots,a.length);i++){
+   const box=document.createElement('div');
+   box.className='image';
+   if(a[i]) box.innerHTML=`<img src="${a[i]}"><button class="danger" style="position:absolute;right:5px;top:5px" onclick="clearImage(${i})">×</button>`;
+   else box.innerHTML=`<label>🖼️ 上傳第 ${i+1} 張圖片<input type="file" accept="image/*"></label>`;
+   const input=box.querySelector('input');
+   if(input)input.onchange=e=>readImage(e,i);
+   imgs.appendChild(box);
+ }
+}
+function readImage(e,i){
+ const f=e.target.files[0];if(!f)return;
+ const r=new FileReader();
+ r.onload=()=>{data.sections[cur].data.images[i]=r.result; saveAll(); renderImages(); preview(false)};
+ r.readAsDataURL(f);
+}
+function clearImage(i){data.sections[cur].data.images[i]='';renderImages();preview(false)}
 
-    const reader = new FileReader();
+function renderItems(){
+ const s=data.sections[cur],a=s.data.items||[];
+ items.innerHTML='';
+ a.forEach((x,i)=>{
+   const d=document.createElement('div');d.className='repeat';
+   let h=`<div class="head"><b>${i+1}</b><button class="danger" onclick="removeItem(${i})">刪除</button></div>`;
+   if(s.type==='rhetoric')h+=field('修辭名稱','a'+i+'_name',x.name)
+     +field('課文例句','a'+i+'_sentence',x.sentence,true)
+     +field('分析／說明','a'+i+'_analysis',x.analysis,true);
+   if(s.type==='characters')h+=`<div class="formgrid">
+     ${field('生字','a'+i+'_word',x.word)}
+     ${field('詞性','a'+i+'_pos',x.pos)}
+     ${field('部首','a'+i+'_rad',x.rad)}
+     ${field('筆畫','a'+i+'_stroke',x.stroke)}
+     <div class="full">${field('生字解釋','a'+i+'_meaning',x.meaning,true)}</div></div>`;
+   if(s.type==='sound')h+=field('文字／字詞','a'+i+'_word',x.word)
+     +field('例詞','a'+i+'_example',x.example)
+     +field('例詞解釋','a'+i+'_meaning',x.meaning,true);
+   if(s.type==='words')h+=field('圈詞','a'+i+'_word',x.word)
+     +field('圈詞解釋','a'+i+'_meaning',x.meaning,true)
+     +field('圈詞相近詞','a'+i+'_similar',x.similar);
+   if(s.type==='idioms')h+=field('成語','a'+i+'_word',x.word)
+     +field('意思','a'+i+'_meaning',x.meaning,true)
+     +field('例句','a'+i+'_example',x.example,true);
+   if(s.type==='sentence')h+=field('句型','a'+i+'_pattern',x.pattern)
+     +field('小朋友端提示','a'+i+'_hint',x.hint,true);
+   if(s.type==='challenge')h+=field('題目','a'+i+'_q',x.q,true)
+     +['A','B','C','D'].map((z,n)=>field(z+' 選項','a'+i+'_o'+n,(x.options||[])[n]||'')).join('')
+     +`<div class="field"><label>正確答案</label><select id="a${i}_ans">${['A','B','C','D'].map(z=>`<option ${x.answer===z?'selected':''}>${z}</option>`).join('')}</select></div>`;
+   d.innerHTML=h;items.appendChild(d);
+ });
+}
 
-    reader.onload = function(e) {
+function addItem(){
+ const s=data.sections[cur];
+ if(s.type==='rhetoric')s.data.items.push({name:'',sentence:'',analysis:''});
+ else if(s.type==='characters')s.data.items.push({word:'',pos:'',rad:'',stroke:'',meaning:''});
+ else if(s.type==='sound')s.data.items.push({word:'',example:'',meaning:''});
+ else if(s.type==='words')s.data.items.push({word:'',meaning:'',similar:''});
+ else if(s.type==='idioms')s.data.items.push({word:'',meaning:'',example:''});
+ else if(s.type==='sentence')s.data.items.push({pattern:'',hint:''});
+ else if(s.type==='challenge')s.data.items.push({q:'',options:['','','',''],answer:'A'});
+ renderItems();
+}
+function removeItem(i){data.sections[cur].data.items.splice(i,1);renderItems()}
 
-        preview.src = e.target.result;
+function captureCurrent(){
+ if(cur<0)return;
+ const s=data.sections[cur],d=s.data;
+ if(s.type==='lesson'||s.type==='text'||s.type==='imageText'||s.type==='custom'){
+   if($('textRich'))d.text=$('textRich').innerHTML;
+ }
+ if(s.type==='rhetoric'&&$('introRich'))d.intro=$('introRich').innerHTML;
+ if(s.type==='custom'&&$('customName'))s.name='📌 '+($('customName').value||'未命名區塊');
+ if(['characters','sound','words','idioms','sentence','challenge','rhetoric'].includes(s.type)){
+   if($('introRich'))d.intro=$('introRich').innerHTML;
+   d.items=(d.items||[]).map((x,i)=>{
+     if(s.type==='rhetoric')return{name:$('a'+i+'_name').value,sentence:$('a'+i+'_sentence').value,analysis:$('a'+i+'_analysis').value};
+     if(s.type==='characters')return{word:$('a'+i+'_word').value,pos:$('a'+i+'_pos').value,rad:$('a'+i+'_rad').value,stroke:$('a'+i+'_stroke').value,meaning:$('a'+i+'_meaning').value};
+     if(s.type==='sound')return{word:$('a'+i+'_word').value,example:$('a'+i+'_example').value,meaning:$('a'+i+'_meaning').value};
+     if(s.type==='words')return{word:$('a'+i+'_word').value,meaning:$('a'+i+'_meaning').value,similar:$('a'+i+'_similar').value};
+     if(s.type==='idioms')return{word:$('a'+i+'_word').value,meaning:$('a'+i+'_meaning').value,example:$('a'+i+'_example').value};
+     if(s.type==='sentence')return{pattern:$('a'+i+'_pattern').value,hint:$('a'+i+'_hint').value};
+     return{q:$('a'+i+'_q').value,options:[0,1,2,3].map(n=>$('a'+i+'_o'+n).value),answer:$('a'+i+'_ans').value};
+   });
+ }
+}
 
-        preview.style.display = "block";
-
-        const textElement =
-            document.getElementById(
-                previewId + "Text"
-            );
-
-        if (textElement) {
-            textElement.style.display = "none";
-        }
-
-    };
-
-    reader.readAsDataURL(file);
-
+function saveCurrent(){
+ if(cur<0)return;
+ captureCurrent();sync();const ok=saveAll();renderList();preview(false);
+ if(ok)alert('已儲存！');
+}
+function preview(capture=true){
+ if(cur<0)return;
+ if(capture)captureCurrent();
+ const s=data.sections[cur],d=s.data;
+ let h='<h3>'+esc(s.name)+'</h3>';
+ if(s.type==='lesson'){
+   if(d.images?.filter(Boolean).length)h+='<div class="lessonimgs">'+d.images.filter(Boolean).map(x=>`<img src="${x}">`).join('')+'</div>';
+   h+='<div class="rtl preview-text">'+formatPreviewHtml(d.text||'')+'</div>';
+ }else if(s.type==='imageText'){
+   if(d.images?.filter(Boolean).length)h+='<div class="lessonimgs">'+d.images.filter(Boolean).map(x=>`<img src="${x}">`).join('')+'</div>';
+   if(d.text)h+='<div class="preview-text">'+formatPreviewHtml(d.text)+'</div>';
+   if(!d.images?.filter(Boolean).length&&!d.text)h+='<span class="small">尚未輸入內容或上傳圖片</span>';
+ }else if(['text','custom'].includes(s.type)){
+   h+=(d.text||'<span class="small">尚未輸入內容</span>');
+ }else if(s.type==='rhetoric'){
+   h+=(d.intro||'');
+   if(d.images?.filter(Boolean).length)h+='<div class="lessonimgs">'+d.images.filter(Boolean).map(x=>`<img src="${x}">`).join('')+'</div>';
+   h+=(d.items||[]).map((x,i)=>`<div class="repeat"><b>${i+1}. ${esc(x.name)}</b><br><b>課文例句：</b>${esc(x.sentence)}<br><b>分析／說明：</b>${esc(x.analysis)}</div>`).join('');
+   if(!d.intro&&!d.images?.filter(Boolean).length&&!(d.items||[]).length)h+='<span class="small">尚未輸入內容</span>';
+ }else{
+   h+=(d.intro||'');
+   h+=(d.items||[]).map((x,i)=>{
+     if(s.type==='characters')return `<div class="repeat"><b>${esc(x.word)}</b>｜詞性：${esc(x.pos)}｜部首：${esc(x.rad)}｜筆畫：${esc(x.stroke)}<br>解釋：${esc(x.meaning)}</div>`;
+     if(s.type==='sound')return `<div class="repeat"><b>${esc(x.word)}</b><br>例詞：${esc(x.example)}<br>解釋：${esc(x.meaning)}</div>`;
+     if(s.type==='words')return `<div class="repeat"><b>${esc(x.word)}</b><br>解釋：${esc(x.meaning)}<br>相近詞：${esc(x.similar)}</div>`;
+     if(s.type==='idioms')return `<div class="repeat"><b>${esc(x.word)}</b><br>意思：${esc(x.meaning)}<br>例句：${esc(x.example)}</div>`;
+     if(s.type==='sentence')return `<div class="repeat"><b>${esc(x.pattern)}</b><br>${esc(x.hint)}<br>✍️ 小朋友端：自行輸入句子</div>`;
+     return `<div class="question"><b>第 ${i+1} 題：${esc(x.q)}</b><ol type="A">${(x.options||[]).map(o=>'<li>'+esc(o)+'</li>').join('')}</ol>正確答案：${esc(x.answer)}</div>`;
+   }).join('');
+ }
+ $('preview').innerHTML=h||'<span class="small">尚未輸入內容</span>';
 }
 
 
-function generateLesson() {
-
-    const grade =
-        document.getElementById("grade").value;
-
-    const lessonNumber =
-        document.getElementById("lessonNumber").value;
-
-    const lessonName =
-        document.getElementById("lessonName").value;
-
-    const html = `<!DOCTYPE html>
-
-<html lang="zh-Hant">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>${lessonNumber}｜${lessonName}</title>
-
-<style>
-
-body {
-    margin: 0;
-    background: #f5f7fb;
-    font-family:
-        "Microsoft JhengHei",
-        sans-serif;
-    color: #334155;
+function formatPreviewHtml(html){
+  if(!html)return '<span class="small">尚未輸入內容</span>';
+  // 保留編輯器的粗體、顏色與其他 HTML 格式；同時把純文字中的換行轉成真正換行。
+  const box=document.createElement('div');
+  box.innerHTML=html;
+  const walk=node=>{
+    [...node.childNodes].forEach(n=>{
+      if(n.nodeType===Node.TEXT_NODE && /\n/.test(n.nodeValue)){
+        const parts=n.nodeValue.split(/\n/);
+        const frag=document.createDocumentFragment();
+        parts.forEach((part,i)=>{
+          if(part)frag.appendChild(document.createTextNode(part));
+          if(i<parts.length-1)frag.appendChild(document.createElement('br'));
+        });
+        n.replaceWith(frag);
+      }else if(n.nodeType===Node.ELEMENT_NODE)walk(n);
+    });
+  };
+  walk(box);
+  return box.innerHTML;
 }
 
-header {
-    background: linear-gradient(
-        135deg,
-        #667eea,
-        #764ba2
-    );
-
-    color: white;
-    padding: 25px;
-    text-align: center;
+function addCustom(){
+ const n=prompt('新自訂區塊名稱：');if(!n)return;
+ data.sections.push({id:'c'+Date.now(),name:'📌 '+n,type:'custom',data:{text:''}});
+ select(data.sections.length-1);
 }
-
-main {
-    max-width: 1000px;
-    margin: auto;
-    padding: 30px 15px;
+function delSection(){
+ if(confirm('確定刪除？')){
+   data.sections.splice(cur,1);cur=-1;
+   editor.classList.add('hidden');empty.classList.remove('hidden');
+   renderList();saveAll();
+ }
 }
-
-section {
-    background: white;
-    margin-bottom: 25px;
-    padding: 25px;
-    border-radius: 20px;
+function sync(){
+ ['subject','stage','grade','semester','lessonNo','lessonTitle'].forEach(k=>data[k]=$(k).value);
 }
-
-h2 {
-    margin-top: 0;
+function saveAll(){
+ if(cur>=0)captureCurrent();
+ sync();
+ try{
+   localStorage.setItem('editorDataV4',JSON.stringify(data));
+   return true;
+ }catch(e){
+   console.error(e);
+   alert('圖片或教材資料太大，瀏覽器暫時無法儲存。請先下載教材資料備份，再重新整理圖片大小後儲存。');
+   return false;
+ }
 }
-
-img {
-    width: 100%;
-    border-radius: 12px;
+function download(){
+ saveAll();
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+ a.download=data.grade+'_'+data.lessonNo+'_'+data.lessonTitle+'_教材資料.json';
+ a.click();
 }
-
-.back {
-    display: inline-block;
-    margin-bottom: 20px;
-    text-decoration: none;
-    color: #5968c8;
+function load(e){
+ const f=e.target.files[0];if(!f)return;
+ const r=new FileReader();
+ r.onload=()=>{try{data=JSON.parse(r.result);init()}catch(x){alert('檔案格式錯誤')}};
+ r.readAsText(f);
 }
-
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<h1>
-${grade} ${lessonNumber}
-</h1>
-
-<p>
-${lessonName}
-</p>
-
-</header>
-
-
-<main>
-
-<a
-class="back"
-href="../../index.html">
-
-← 回到首頁
-
-</a>
-
-
-<section>
-
-<h2>📖 課文</h2>
-
-<img src="text.jpg">
-
-</section>
-
-
-<section>
-
-<h2>💡 課文大意</h2>
-
-<img src="summary.jpg">
-
-</section>
-
-
-<section>
-
-<h2>🧱 課文結構</h2>
-
-<img src="structure.jpg">
-
-</section>
-
-
-<section>
-
-<h2>❓ 閱讀理解</h2>
-
-<img src="reading.jpg">
-
-</section>
-
-
-<section>
-
-<h2>✨ 修辭分析</h2>
-
-<img src="rhetoric.jpg">
-
-</section>
-
-
-<section>
-
-<h2>🔤 生字</h2>
-
-<img src="words.jpg">
-
-</section>
-
-
-</main>
-
-</body>
-
-</html>`;
-
-    document.getElementById("output").value =
-        html;
-
-    document.getElementById("result")
-        .style.display = "block";
-
+function normalize(){
+ if(!data.sections||!Array.isArray(data.sections))data.sections=structuredClone(base);
+ data.sections.forEach(s=>{
+   if(!s.data)s.data={};
+   if(['lesson','text','imageText','custom'].includes(s.type)&&s.data.text!=null&&!String(s.data.text).includes('<')){
+     s.data.text=plainToHtml(s.data.text);
+   }
+   if(['characters','sound','words','idioms','sentence','challenge','rhetoric'].includes(s.type)&&s.data.intro!=null&&!String(s.data.intro).includes('<')){
+     s.data.intro=plainToHtml(s.data.intro);
+   }
+   if(['lesson','imageText','rhetoric'].includes(s.type)&&!Array.isArray(s.data.images))s.data.images=[];
+   if(['characters','sound','words','idioms','sentence','challenge','rhetoric'].includes(s.type)&&!Array.isArray(s.data.items))s.data.items=[];
+ });
 }
-
-
-function downloadLesson() {
-
-    const content =
-        document.getElementById("output").value;
-
-    const blob = new Blob(
-        [content],
-        {
-            type: "text/html"
-        }
-    );
-
-    const url =
-        URL.createObjectURL(blob);
-
-    const link =
-        document.createElement("a");
-
-    link.href = url;
-
-    link.download = "lesson.html";
-
-    link.click();
-
-    URL.revokeObjectURL(url);
-
+function init(){
+ normalize();
+ ['subject','stage','grade','semester','lessonNo','lessonTitle'].forEach(k=>$(k).value=data[k]||'');
+ cur=-1;renderList();
 }
-
+init();
 </script>
-
 </body>
 </html>
