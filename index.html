@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>我的學習樂園</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family:
+        "Microsoft JhengHei",
+        "PingFang TC",
+        Arial,
+        sans-serif;
+    background: #f5f7fb;
+    color: #334155;
+}
+
+/* 頂部 */
+
+header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: 0 3px 12px rgba(0,0,0,.12);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin: 10px 0 0;
+    font-size: 16px;
+    opacity: .9;
+}
+
+/* 主內容 */
+
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 35px 20px 60px;
+}
+
+/* 歡迎區 */
+
+.welcome {
+    background: white;
+    border-radius: 22px;
+    padding: 28px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+}
+
+.welcome h2 {
+    margin-top: 0;
+    font-size: 26px;
+}
+
+/* 年級選擇 */
+
+.grade-section {
+    margin-bottom: 35px;
+}
+
+.grade-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+/* 課程卡片 */
+
+.lesson-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.lesson-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 5px 18px rgba(0,0,0,.07);
+    transition: .25s;
+    border: 3px solid transparent;
+}
+
+.lesson-card:hover {
+    transform: translateY(-5px);
+    border-color: #8b9df5;
+    box-shadow: 0 10px 25px rgba(102,126,234,.18);
+}
+
+.lesson-icon {
+    font-size: 45px;
+    margin-bottom: 12px;
+}
+
+.lesson-grade {
+    display: inline-block;
+    background: #eef2ff;
+    color: #5968c8;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.lesson-name {
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.lesson-info {
+    color: #64748b;
+    line-height: 1.7;
+}
+
+/* 尚未有教材 */
+
+.empty-box {
+    background: white;
+    border: 2px dashed #cbd5e1;
+    border-radius: 20px;
+    padding: 35px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+/* 管理按鈕 */
+
+.admin-area {
+    margin-top: 45px;
+    text-align: center;
+}
+
+.admin-link {
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 12px;
+    background: #e2e8f0;
+    color: #475569;
+    text-decoration: none;
+    transition: .2s;
+}
+
+.admin-link:hover {
+    background: #cbd5e1;
+}
+
+/* 手機 */
+
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 26px;
+    }
+
+    main {
+        padding: 25px 15px;
+    }
+
+    .welcome {
+        padding: 22px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📚 我的學習樂園</h1>
+    <p>一起快樂學習、慢慢累積、每天進步！</p>
+</header>
+
+<main>
+
+    <section class="welcome">
+
+        <h2>👋 歡迎來到學習樂園！</h2>
+
+        <p>
+            選擇今天要學習的課文，
+            一起閱讀、認識生字、了解課文大意，
+            挑戰閱讀理解吧！
+        </p>
+
+    </section>
+
+
+    <!-- 四年級 -->
+
+    <section class="grade-section">
+
+        <div class="grade-title">
+            🎒 四年級
+        </div>
+
+        <div class="lesson-grid">
+
+            <a
+                class="lesson-card"
+                href="data/lesson1/lesson.html"
+            >
+
+                <div class="lesson-icon">
+                    📖
+                </div>
+
+                <div class="lesson-grade">
+                    國語
+                </div>
+
+                <div class="lesson-name">
+                    第一課
+                </div>
+
+                <div class="lesson-info">
+                    點擊進入課文學習
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- 未來新增教材的位置 -->
+
+    <section class="grade-section">
+
+        <div class="grade-title">
+            📚 更多課程
+        </div>
+
+        <div class="empty-box">
+
+            之後新增的教材會出現在這裡 ✨
+
+        </div>
+
+    </section>
+
+
+    <!-- 媽媽管理區 -->
+
+    <div class="admin-area">
+
+        <a
+            class="admin-link"
+            href="editor.html"
+        >
+            🔧 教材管理
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>
