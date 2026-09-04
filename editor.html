@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>教材管理中心</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f5f7fb;
+    color: #334155;
+    font-family:
+        "Microsoft JhengHei",
+        "PingFang TC",
+        sans-serif;
+}
+
+header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px 20px 60px;
+}
+
+.back {
+    display: inline-block;
+    text-decoration: none;
+    color: #5968c8;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.card {
+    background: white;
+    padding: 28px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.07);
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+@media (max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.image-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.image-box h3 {
+    margin-top: 0;
+}
+
+.preview {
+    width: 100%;
+    min-height: 180px;
+    margin-top: 15px;
+    border-radius: 10px;
+    background: #f8fafc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: #94a3b8;
+}
+
+.preview img {
+    width: 100%;
+    height: auto;
+    display: none;
+}
+
+.notice {
+    background: #fff7ed;
+    border-left: 5px solid #f97316;
+    padding: 18px;
+    border-radius: 10px;
+    line-height: 1.8;
+}
+
+button {
+    border: none;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.generate-btn {
+    background: #667eea;
+    color: white;
+}
+
+.generate-btn:hover {
+    background: #5565d6;
+}
+
+.result {
+    display: none;
+    margin-top: 25px;
+}
+
+textarea {
+    width: 100%;
+    height: 250px;
+    padding: 15px;
+    font-family: monospace;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+}
+
+.download-btn {
+    margin-top: 15px;
+    background: #16a34a;
+    color: white;
+}
+
+.file-name {
+    margin-top: 8px;
+    color: #64748b;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🔧 教材管理中心</h1>
+    <p>建立小朋友的學習教材</p>
+</header>
+
+<main>
+
+<a href="index.html" class="back">
+← 回到學習首頁
+</a>
+
+<div class="notice">
+
+<strong>📌 教材建立方式</strong><br>
+
+在這裡選擇教材圖片並預覽。<br>
+
+完成後系統會產生教材頁面的程式碼。<br>
+
+圖片本身之後會放在 GitHub 的教材資料夾中，因此不會把大量圖片塞進網頁資料或 JSON。
+
+</div>
+
+
+<div class="card">
+
+<h2>📚 基本資料</h2>
+
+<div class="form-grid">
+
+<div>
+<label>年級</label>
+
+<select id="grade">
+<option value="四年級">四年級</option>
+<option value="五年級">五年級</option>
+<option value="六年級">六年級</option>
+</select>
+
+</div>
+
+
+<div>
+
+<label>課次</label>
+
+<input
+type="text"
+id="lessonNumber"
+placeholder="例如：第一課">
+
+</div>
+
+
+<div>
+
+<label>課名</label>
+
+<input
+type="text"
+id="lessonName"
+placeholder="例如：水陸小高手">
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🖼️ 教材圖片</h2>
+
+<div class="image-grid">
+
+<div class="image-box">
+
+<h3>📖 課文</h3>
+
+<input type="file" accept="image/*"
+onchange="previewImage(this,'textPreview','textFile')">
+
+<div class="file-name" id="textFile"></div>
+
+<div class="preview">
+<span id="textPreviewText">尚未選擇圖片</span>
+<img id="textPreview">
+</div>
+
+</div>
+
+
+<div class="image-box">
+
+<h3>💡 課文大意</h3>
+
+<input type="file" accept="image/*"
+onchange="previewImage(this,'summaryPreview','summaryFile')">
+
+<div class="file-name" id="summaryFile"></div>
+
+<div class="preview">
+<span id="summaryPreviewText">尚未選擇圖片</span>
+<img id="summaryPreview">
+</div>
+
+</div>
+
+
+<div class="image-box">
+
+<h3>🧱 課文結構</h3>
+
+<input type="file" accept="image/*"
+onchange="previewImage(this,'structurePreview','structureFile')">
+
+<div class="file-name" id="structureFile"></div>
+
+<div class="preview">
+<span id="structurePreviewText">尚未選擇圖片</span>
+<img id="structurePreview">
+</div>
+
+</div>
+
+
+<div class="image-box">
+
+<h3>❓ 閱讀理解</h3>
+
+<input type="file" accept="image/*"
+onchange="previewImage(this,'readingPreview','readingFile')">
+
+<div class="file-name" id="readingFile"></div>
+
+<div class="preview">
+<span id="readingPreviewText">尚未選擇圖片</span>
+<img id="readingPreview">
+</div>
+
+</div>
+
+
+<div class="image-box">
+
+<h3>✨ 修辭分析</h3>
+
+<input type="file" accept="image/*"
+onchange="previewImage(this,'rhetoricPreview','rhetoricFile')">
+
+<div class="file-name" id="rhetoricFile"></div>
+
+<div class="preview">
+<span id="rhetoricPreviewText">尚未選擇圖片</span>
+<img id="rhetoricPreview">
+</div>
+
+</div>
+
+
+<div class="image-box">
+
+<h3>🔤 生字資料</h3>
+
+<input type="file" accept="image/*"
+onchange="previewImage(this,'wordPreview','wordFile')">
+
+<div class="file-name" id="wordFile"></div>
+
+<div class="preview">
+<span id="wordPreviewText">尚未選擇圖片</span>
+<img id="wordPreview">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🚀 建立教材頁面</h2>
+
+<p>
+確認資料與圖片後，產生教材頁面的基本程式碼。
+</p>
+
+<button class="generate-btn" onclick="generateLesson()">
+產生教材頁面
+</button>
+
+<div class="result" id="result">
+
+<h3>📄 lesson.html</h3>
+
+<textarea id="output"></textarea>
+
+<button class="download-btn" onclick="downloadLesson()">
+⬇️ 下載 lesson.html
+</button>
+
+</div>
+
+</div>
+
+</main>
+
+
+<script>
+
+function previewImage(input, previewId, fileId) {
+
+    const preview = document.getElementById(previewId);
+    const fileName = document.getElementById(fileId);
+
+    if (!input.files || !input.files[0]) {
+        return;
+    }
+
+    const file = input.files[0];
+
+    fileName.textContent =
+        "已選擇：" + file.name;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        preview.src = e.target.result;
+
+        preview.style.display = "block";
+
+        const textElement =
+            document.getElementById(
+                previewId + "Text"
+            );
+
+        if (textElement) {
+            textElement.style.display = "none";
+        }
+
+    };
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function generateLesson() {
+
+    const grade =
+        document.getElementById("grade").value;
+
+    const lessonNumber =
+        document.getElementById("lessonNumber").value;
+
+    const lessonName =
+        document.getElementById("lessonName").value;
+
+    const html = `<!DOCTYPE html>
+
+<html lang="zh-Hant">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>${lessonNumber}｜${lessonName}</title>
+
+<style>
+
+body {
+    margin: 0;
+    background: #f5f7fb;
+    font-family:
+        "Microsoft JhengHei",
+        sans-serif;
+    color: #334155;
+}
+
+header {
+    background: linear-gradient(
+        135deg,
+        #667eea,
+        #764ba2
+    );
+
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+main {
+    max-width: 1000px;
+    margin: auto;
+    padding: 30px 15px;
+}
+
+section {
+    background: white;
+    margin-bottom: 25px;
+    padding: 25px;
+    border-radius: 20px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.back {
+    display: inline-block;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #5968c8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>
+${grade} ${lessonNumber}
+</h1>
+
+<p>
+${lessonName}
+</p>
+
+</header>
+
+
+<main>
+
+<a
+class="back"
+href="../../index.html">
+
+← 回到首頁
+
+</a>
+
+
+<section>
+
+<h2>📖 課文</h2>
+
+<img src="text.jpg">
+
+</section>
+
+
+<section>
+
+<h2>💡 課文大意</h2>
+
+<img src="summary.jpg">
+
+</section>
+
+
+<section>
+
+<h2>🧱 課文結構</h2>
+
+<img src="structure.jpg">
+
+</section>
+
+
+<section>
+
+<h2>❓ 閱讀理解</h2>
+
+<img src="reading.jpg">
+
+</section>
+
+
+<section>
+
+<h2>✨ 修辭分析</h2>
+
+<img src="rhetoric.jpg">
+
+</section>
+
+
+<section>
+
+<h2>🔤 生字</h2>
+
+<img src="words.jpg">
+
+</section>
+
+
+</main>
+
+</body>
+
+</html>`;
+
+    document.getElementById("output").value =
+        html;
+
+    document.getElementById("result")
+        .style.display = "block";
+
+}
+
+
+function downloadLesson() {
+
+    const content =
+        document.getElementById("output").value;
+
+    const blob = new Blob(
+        [content],
+        {
+            type: "text/html"
+        }
+    );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download = "lesson.html";
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+</script>
+
+</body>
+</html>
